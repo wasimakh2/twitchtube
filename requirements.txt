@@ -4,3 +4,6 @@ httplib2
 google-auth-oauthlib
 google-api-python-client
 google-auth
+imageio>=2.6.0 # not directly required, pinned by Snyk to avoid a vulnerability
+pillow>=8.1.0 # not directly required, pinned by Snyk to avoid a vulnerability
+rsa>=4.7 # not directly required, pinned by Snyk to avoid a vulnerability
