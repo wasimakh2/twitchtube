@@ -66,7 +66,10 @@ def getAuthenticatedService(CREDENTIALS_FILE):
     credentials = flow.fetch_token(code=code)
     saveCredentials(CREDENTIALS_FILE, credentials)
 
-    return build(API_SERVICE_NAME, API_VERSION, credentials=flow.credentials)
+    try:
+        return build(API_SERVICE_NAME, API_VERSION, credentials=flow.credentials)
+    except Exception as e:
+        log.error("Error in getting authenticated service: %s" % e)
 
 # Renew credentials after each time being called.
 
@@ -108,7 +111,11 @@ def getCredentialsFromStorage(CREDENTIALS_FILE):
 
 
 def saveCredentials(CREDENTIALS_FILE, credentials):
-    open(CREDENTIALS_FILE, 'wb')
+    try:
+        with open(CREDENTIALS_FILE, 'wb') as f:
+            json.dump(json.dumps(credentials, default=lambda o: o.__dict__), f)
+    except Exception as e:
+        log.error('Error saving credentials: %s' % e)
     with open(CREDENTIALS_FILE, 'w') as outfile:
         json.dump(json.dumps(credentials, default=lambda o: o.__dict__), outfile)
 
@@ -182,7 +189,7 @@ def resumableUpload(request):
             else:
                 raise
         except(RETRIABLE_EXCEPTIONS, e):
-            error = 'A retriable error occurred: %s' % e
+            error = "A retriable error occurred: %s" % e
 
         if error is not None:
             log.error(error)
