@@ -4,3 +4,5 @@ httplib2
 google-auth-oauthlib
 google-api-python-client
 google-auth
+protobuf>=6.33.5 # not directly required, pinned by Snyk to avoid a vulnerability
+zipp>=3.19.1 # not directly required, pinned by Snyk to avoid a vulnerability
